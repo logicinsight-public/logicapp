@@ -1,0 +1,607 @@
+{
+    "title": "Cluster Physical Disks Overview",
+    "description": "[[suggested_dashboards]]",
+    "widgets": [
+      {
+        "id": 739967362197144,
+        "definition": {
+          "type": "image",
+          "url": "https://i.postimg.cc/0y6xW0n9/Infinity.png",
+          "sizing": "fill",
+          "has_background": true,
+          "has_border": true,
+          "vertical_align": "center",
+          "horizontal_align": "center"
+        },
+        "layout": {
+          "x": 0,
+          "y": 0,
+          "width": 2,
+          "height": 1
+        }
+      },
+      {
+        "id": 1182227341928108,
+        "definition": {
+          "title": "Total disks",
+          "title_size": "16",
+          "title_align": "left",
+          "time": {
+            "type": "live",
+            "unit": "minute",
+            "value": 1
+          },
+          "type": "query_value",
+          "requests": [
+            {
+              "response_format": "scalar",
+              "queries": [
+                {
+                  "name": "query1",
+                  "data_source": "metrics",
+                  "query": "sum:LogicInsightPE.disk_location{$cluster_name,$host_name}.rollup(count)",
+                  "aggregator": "last"
+                }
+              ],
+              "formulas": [
+                {
+                  "formula": "query1"
+                }
+              ]
+            }
+          ],
+          "autoscale": true,
+          "precision": 0,
+          "timeseries_background": {
+            "yaxis": {
+              "include_zero": true
+            },
+            "type": "area"
+          }
+        },
+        "layout": {
+          "x": 2,
+          "y": 0,
+          "width": 1,
+          "height": 2
+        }
+      },
+      {
+        "id": 5740636276504488,
+        "definition": {
+          "title": "Total bad disks",
+          "title_size": "16",
+          "title_align": "left",
+          "time": {
+            "type": "live",
+            "unit": "minute",
+            "value": 5
+          },
+          "type": "query_value",
+          "requests": [
+            {
+              "response_format": "scalar",
+              "queries": [
+                {
+                  "name": "query1",
+                  "data_source": "metrics",
+                  "query": "sum:LogicInsightPE.disk_bad{$cluster_name,$host_name}",
+                  "aggregator": "last"
+                }
+              ],
+              "formulas": [
+                {
+                  "formula": "query1"
+                }
+              ],
+              "conditional_formats": [
+                {
+                  "comparator": ">",
+                  "value": 1,
+                  "palette": "white_on_red"
+                },
+                {
+                  "comparator": "=",
+                  "value": 0,
+                  "palette": "white_on_green"
+                }
+              ]
+            }
+          ],
+          "autoscale": true,
+          "precision": 0,
+          "timeseries_background": {
+            "yaxis": {
+              "include_zero": true
+            },
+            "type": "area"
+          }
+        },
+        "layout": {
+          "x": 3,
+          "y": 0,
+          "width": 1,
+          "height": 2
+        }
+      },
+      {
+        "id": 1213473181014424,
+        "definition": {
+          "title": "Online disks",
+          "title_size": "16",
+          "title_align": "left",
+          "time": {
+            "type": "live",
+            "unit": "minute",
+            "value": 1
+          },
+          "type": "query_value",
+          "requests": [
+            {
+              "response_format": "scalar",
+              "queries": [
+                {
+                  "name": "query1",
+                  "data_source": "metrics",
+                  "query": "sum:LogicInsightPE.disk_online{$cluster_name,$host_name}",
+                  "aggregator": "last"
+                }
+              ],
+              "formulas": [
+                {
+                  "formula": "query1"
+                }
+              ]
+            }
+          ],
+          "autoscale": true,
+          "precision": 0,
+          "timeseries_background": {
+            "yaxis": {
+              "include_zero": true
+            },
+            "type": "area"
+          }
+        },
+        "layout": {
+          "x": 4,
+          "y": 0,
+          "width": 1,
+          "height": 2
+        }
+      },
+      {
+        "id": 8398244187603068,
+        "definition": {
+          "title": "Disks mounted",
+          "title_size": "16",
+          "title_align": "left",
+          "time": {
+            "type": "live",
+            "unit": "minute",
+            "value": 1
+          },
+          "type": "query_value",
+          "requests": [
+            {
+              "response_format": "scalar",
+              "queries": [
+                {
+                  "name": "query1",
+                  "data_source": "metrics",
+                  "query": "sum:LogicInsightPE.disk_mounted{$cluster_name,$host_name}",
+                  "aggregator": "last"
+                }
+              ],
+              "formulas": [
+                {
+                  "formula": "query1"
+                }
+              ]
+            }
+          ],
+          "autoscale": true,
+          "precision": 0,
+          "timeseries_background": {
+            "yaxis": {
+              "include_zero": true
+            },
+            "type": "area"
+          }
+        },
+        "layout": {
+          "x": 5,
+          "y": 0,
+          "width": 1,
+          "height": 2
+        }
+      },
+      {
+        "id": 8218953814648070,
+        "definition": {
+          "title": "Host disk capacity",
+          "title_size": "16",
+          "title_align": "left",
+          "time": {
+            "type": "live",
+            "unit": "minute",
+            "value": 5
+          },
+          "type": "query_table",
+          "requests": [
+            {
+              "queries": [
+                {
+                  "data_source": "metrics",
+                  "name": "query2",
+                  "query": "sum:LogicInsightPE.disk_storage.capacity_bytes{$cluster_name} by {host_name,disk_id}",
+                  "aggregator": "last"
+                },
+                {
+                  "data_source": "metrics",
+                  "name": "query1",
+                  "query": "sum:LogicInsightPE.disk_storage.usage_bytes{$cluster_name} by {host_name,disk_id}",
+                  "aggregator": "last"
+                },
+                {
+                  "data_source": "metrics",
+                  "name": "query3",
+                  "query": "sum:LogicInsightPE.disk_storage.free_bytes{$cluster_name} by {host_name,disk_id}",
+                  "aggregator": "last"
+                }
+              ],
+              "response_format": "scalar",
+              "sort": {
+                "order_by": [
+                  {
+                    "type": "group",
+                    "name": "host_name",
+                    "order": "asc"
+                  }
+                ],
+                "count": 500
+              },
+              "formulas": [
+                {
+                  "cell_display_mode": "bar",
+                  "number_format": {
+                    "unit": {
+                      "type": "canonical_unit",
+                      "unit_name": "byte"
+                    }
+                  },
+                  "alias": "DISK CAPACITY",
+                  "formula": "query2"
+                },
+                {
+                  "number_format": {
+                    "unit": {
+                      "type": "canonical_unit",
+                      "unit_name": "byte"
+                    }
+                  },
+                  "alias": "DISK USAGE",
+                  "formula": "query1"
+                },
+                {
+                  "number_format": {
+                    "unit": {
+                      "type": "canonical_unit",
+                      "unit_name": "byte"
+                    }
+                  },
+                  "alias": "DISK FREE",
+                  "formula": "query3"
+                }
+              ]
+            }
+          ],
+          "has_search_bar": "auto"
+        },
+        "layout": {
+          "x": 6,
+          "y": 0,
+          "width": 4,
+          "height": 9
+        }
+      },
+      {
+        "id": 7654658123058628,
+        "definition": {
+          "title": "Disk types",
+          "title_size": "16",
+          "title_align": "left",
+          "time": {
+            "type": "live",
+            "unit": "minute",
+            "value": 5
+          },
+          "requests": [
+            {
+              "queries": [
+                {
+                  "name": "query1",
+                  "data_source": "metrics",
+                  "query": "sum:LogicInsightPE.disk_online{$cluster_name,$host_name} by {storage_tier_name}",
+                  "aggregator": "last"
+                }
+              ],
+              "response_format": "scalar",
+              "style": {
+                "palette": "datadog16"
+              },
+              "formulas": [
+                {
+                  "formula": "query1"
+                }
+              ],
+              "sort": {
+                "count": 500,
+                "order_by": [
+                  {
+                    "type": "formula",
+                    "index": 0,
+                    "order": "desc"
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "sunburst",
+          "legend": {
+            "type": "table"
+          }
+        },
+        "layout": {
+          "x": 0,
+          "y": 1,
+          "width": 2,
+          "height": 3
+        }
+      },
+      {
+        "id": 1105519544520666,
+        "definition": {
+          "title": "Host storage capacity",
+          "title_size": "16",
+          "title_align": "left",
+          "time": {
+            "type": "live",
+            "unit": "minute",
+            "value": 5
+          },
+          "type": "query_table",
+          "requests": [
+            {
+              "queries": [
+                {
+                  "data_source": "metrics",
+                  "name": "query2",
+                  "query": "sum:LogicInsightPE.disk_storage.capacity_bytes{$cluster_name,$host_name} by {host_name}",
+                  "aggregator": "last"
+                },
+                {
+                  "data_source": "metrics",
+                  "name": "query1",
+                  "query": "sum:LogicInsightPE.disk_storage.usage_bytes{$cluster_name,$host_name} by {host_name}",
+                  "aggregator": "last"
+                },
+                {
+                  "data_source": "metrics",
+                  "name": "query3",
+                  "query": "sum:LogicInsightPE.disk_storage.free_bytes{$cluster_name,$host_name} by {host_name}",
+                  "aggregator": "last"
+                }
+              ],
+              "response_format": "scalar",
+              "sort": {
+                "order_by": [
+                  {
+                    "type": "group",
+                    "name": "host_name",
+                    "order": "asc"
+                  }
+                ],
+                "count": 500
+              },
+              "formulas": [
+                {
+                  "cell_display_mode": "bar",
+                  "number_format": {
+                    "unit": {
+                      "type": "canonical_unit",
+                      "unit_name": "byte"
+                    }
+                  },
+                  "alias": "DISK CAPACITY",
+                  "formula": "query2"
+                },
+                {
+                  "number_format": {
+                    "unit": {
+                      "type": "canonical_unit",
+                      "unit_name": "byte"
+                    }
+                  },
+                  "alias": "DISK USAGE",
+                  "formula": "query1"
+                },
+                {
+                  "number_format": {
+                    "unit": {
+                      "type": "canonical_unit",
+                      "unit_name": "byte"
+                    }
+                  },
+                  "alias": "DISK FREE",
+                  "formula": "query3"
+                }
+              ]
+            }
+          ],
+          "has_search_bar": "auto"
+        },
+        "layout": {
+          "x": 2,
+          "y": 2,
+          "width": 4,
+          "height": 2
+        }
+      },
+      {
+        "id": 5308594647191562,
+        "definition": {
+          "title": "Cluster disks",
+          "title_size": "16",
+          "title_align": "left",
+          "time": {
+            "type": "live",
+            "unit": "minute",
+            "value": 1
+          },
+          "type": "query_table",
+          "requests": [
+            {
+              "queries": [
+                {
+                  "data_source": "metrics",
+                  "name": "query1",
+                  "query": "avg:LogicInsightPE.disk_location{$cluster_name,$host_name} by {cluster_name,host_name,disk_id,storage_tier_name,disk_serial_number,mount_path}",
+                  "aggregator": "last"
+                },
+                {
+                  "data_source": "metrics",
+                  "name": "query2",
+                  "query": "avg:LogicInsightPE.disk_online{$cluster_name,$host_name} by {cluster_name,host_name,disk_id,storage_tier_name,disk_serial_number,mount_path}",
+                  "aggregator": "last"
+                },
+                {
+                  "data_source": "metrics",
+                  "name": "query4",
+                  "query": "avg:LogicInsightPE.disk_mounted{$cluster_name,$host_name} by {cluster_name,host_name,disk_id,storage_tier_name,disk_serial_number,mount_path}",
+                  "aggregator": "last"
+                },
+                {
+                  "data_source": "metrics",
+                  "name": "query3",
+                  "query": "avg:LogicInsightPE.disk_bad{$cluster_name,$host_name} by {cluster_name,host_name,disk_id,storage_tier_name,disk_serial_number,mount_path}",
+                  "aggregator": "last"
+                },
+                {
+                  "data_source": "metrics",
+                  "name": "query5",
+                  "query": "avg:LogicInsightPE.disk_size{$cluster_name,$host_name} by {cluster_name,host_name,disk_id,storage_tier_name,disk_serial_number,mount_path}",
+                  "aggregator": "last"
+                }
+              ],
+              "response_format": "scalar",
+              "text_formats": [],
+              "sort": {
+                "order_by": [
+                  {
+                    "type": "group",
+                    "name": "host_name",
+                    "order": "asc"
+                  }
+                ],
+                "count": 500
+              },
+              "formulas": [
+                {
+                  "cell_display_mode": "bar",
+                  "alias": "Disk location",
+                  "formula": "query1"
+                },
+                {
+                  "conditional_formats": [
+                    {
+                      "comparator": "=",
+                      "value": 1,
+                      "palette": "green_on_white"
+                    },
+                    {
+                      "comparator": "=",
+                      "value": 0,
+                      "palette": "red_on_white"
+                    }
+                  ],
+                  "cell_display_mode": "bar",
+                  "alias": "Disk online",
+                  "formula": "query2"
+                },
+                {
+                  "conditional_formats": [
+                    {
+                      "comparator": "=",
+                      "value": 1,
+                      "palette": "green_on_white"
+                    },
+                    {
+                      "comparator": "=",
+                      "value": 0,
+                      "palette": "red_on_white"
+                    }
+                  ],
+                  "cell_display_mode": "bar",
+                  "alias": "Disk mounted",
+                  "formula": "query4"
+                },
+                {
+                  "conditional_formats": [
+                    {
+                      "comparator": "=",
+                      "value": 0,
+                      "palette": "green_on_white"
+                    },
+                    {
+                      "comparator": "=",
+                      "value": 1,
+                      "palette": "red_on_white"
+                    }
+                  ],
+                  "cell_display_mode": "bar",
+                  "alias": "Disk bad",
+                  "formula": "query3"
+                },
+                {
+                  "cell_display_mode": "bar",
+                  "number_format": {
+                    "unit": {
+                      "type": "canonical_unit",
+                      "unit_name": "byte"
+                    }
+                  },
+                  "alias": "Disk size",
+                  "formula": "query5"
+                }
+              ]
+            }
+          ],
+          "has_search_bar": "auto"
+        },
+        "layout": {
+          "x": 0,
+          "y": 4,
+          "width": 6,
+          "height": 5
+        }
+      }
+    ],
+    "template_variables": [
+      {
+        "name": "cluster_name",
+        "prefix": "cluster_name",
+        "available_values": [],
+        "default": "*"
+      },
+      {
+        "name": "host_name",
+        "prefix": "host_name",
+        "available_values": [],
+        "default": "*"
+      }
+    ],
+    "layout_type": "ordered",
+    "notify_list": [],
+    "reflow_type": "fixed"
+  }
