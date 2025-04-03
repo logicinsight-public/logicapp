@@ -11,4 +11,4 @@
 
 # <p align="center">Port Diagram</p>
 
-![Network Diagram](images/Port-Diagram.png)
+![Network Diagram](Port-Diagram.png)
