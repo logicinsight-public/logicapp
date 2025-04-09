@@ -22,7 +22,7 @@ This solution has the minimum following **requirements**:
 - **Optional** Dedicated user for IPMI Monitoring.
     - While not required, a dedicated user for **LogicApp** is recommended when monitoring IPMI hardware data.
 
-## Minimun Requirements
+## Minimum Requirements
 
 | CPU | vCPU | RAM | Disk |
 |-----|------|-----|------|
